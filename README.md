@@ -1,63 +1,80 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+Написать приложение REST API для работы с задачами.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Требования
+* Фреймворк Laravel
+* MySQL или PostgreSQL
+* Аутентификация через токен
+* Валидация входных параметров
+* Приложение должно быть опубликовано в GitHub, GitLab, Bitbucket.
 
-## About Laravel
+## Документация API
+### Аутентификация
+Токен доступа должен передаваться во всех обращениях к API в заголовке 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Authorization.\
+Authorization: Bearer ТОКЕН \
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Ошибки
+При возникновении ошибок, API отдает соответствующие HTTP-коды.
+Код   Описание \
+400   Ошибка валидации \
+401   Ошибка авторизации (невалидный токен) 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+### Ресурс Task
+{\
+"id": "integer",\
+"name": "string",\
+"description": "string",\
+"created_at": "string",\
+"updated_at": "string"\
+}\
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+|Поле | type |Описание |
+|-----|-----------|-----|
+|id |            integer| Идентификатор задачи|
+|name |          string | Наименование задачи|
+|description |   string |Описание задачи|
+|created_at  |  string |(date-time)  Время создания задачи Строка в формате RFC3339|
+|updated_at | string |(date-time) Время обновления задачи Строка в формате RFC3339|
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+### Действия
+#### Создание новой задачи
+POST /v1/tasks
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Тело запроса
+{\
+"name": "string",\
+"description": "string"\
+}
 
-### Premium Partners
+|Поле | type |Описание |
+|-----|-----------|-----|
+|name |  string |  Наименование задачи (1-255 символов)|
+|description|   string | Описание задачи (1-255 символов)|
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
 
-## Contributing
+#### Ответ
+HTTP Code: 201 Created\
+Ресурс Task
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Получение списка задач
+GET /v1/tasks
 
-## Code of Conduct
+Ответ\
+HTTP Code: 200 OK\
+[]
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Коллекция ресурсов Task
 
-## Security Vulnerabilities
+### Screenshot!
+![1_registration](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/1_registration.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+![2_getToken](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/2_getToken.png)
 
-## License
+![3_createTask](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/3_createTask.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+![4_getTasks](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/4_getTasks.png)
+
+![5_badBearer](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/5_badBearer.png)
