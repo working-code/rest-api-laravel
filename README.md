@@ -1,14 +1,33 @@
 ##Написать приложение REST API для работы с задачами (Тестовое задание)
 
-### Требования
+### Оглавление
+- [Требования](#requirements)
+- [Документация API](#documentation-api)
+  - [Аутентификация](#auth)
+  - [Ошибки](#error)
+  - [Ресурс Task](#resource-task)
+  - [Действия](#actions)
+    - [Создание новой задачи](#create-task)
+      - [Тело запроса](#request)
+      - [Ответ](#response-request)
+    - [Получение списка задач](#get-tasks)
+      - [Ответ](#get-tasks-response)
+- [Как запустить приложение](#install)
+- [Как запустить тесты](#tests)
+- [Как проверить API](#test-api)
+  - [Swagger](#test-api-swagger)
+  - [REST client](#test-api-client)
+
+
+### <a name="requirements">Требования</a>
 * Фреймворк Laravel
 * MySQL или PostgreSQL
 * Аутентификация через токен
 * Валидация входных параметров
 * Приложение должно быть опубликовано в GitHub, GitLab, Bitbucket.
 
-## Документация API
-### Аутентификация
+## <a name="documentation-api">Документация API</a>
+### <a name="auth">Аутентификация</a>
 Токен доступа должен передаваться во всех обращениях к API в заголовке 
 
 ```
@@ -16,7 +35,7 @@ Authorization.
 Authorization: Bearer ТОКЕН 
 ```
 
-### Ошибки
+### <a name="error">Ошибки</a>
 При возникновении ошибок, API отдает соответствующие HTTP-коды.
 
 |Код | Описание |
@@ -25,7 +44,7 @@ Authorization: Bearer ТОКЕН
 |401 |  Ошибка авторизации (невалидный токен)| 
 
 
-### Ресурс Task
+### <a name="resource-task">Ресурс Task</a>
 ```
 {
 "id": "integer",
@@ -45,10 +64,11 @@ Authorization: Bearer ТОКЕН
 |updated_at | string |(date-time) Время обновления задачи Строка в формате RFC3339|
 
 
-### Действия
-#### Создание новой задачи
-POST /v1/tasks\
-**Тело запроса**
+### <a name="actions">Действия</a>
+#### <a name="create-task">Создание новой задачи</a>
+POST /v1/tasks
+
+**<a name="request">Тело запроса</a>**
 ```
 {
 "name": "string",
@@ -62,23 +82,126 @@ POST /v1/tasks\
 |description|   string | Описание задачи (1-255 символов)|
 
 
-**Ответ**
+**<a name="response-request">Ответ</a>**
 ```
 HTTP Code: 201 Created
 ```
 Ресурс Task
 
-#### Получение списка задач
-GET /v1/tasks\
+#### <a name="get-tasks">Получение списка задач</a>
+GET /v1/tasks
 
-**Ответ**
+**<a name="get-tasks-response">Ответ</a>**
 ```
 HTTP Code: 200 OK
 []
 ```
 Коллекция ресурсов Task
 
-### Screenshot
+### <a name="install">Как запустить приложение</a>
+Для запуска нам понадобится
+- linux
+- docker
+- docker-compose
+1. Клонируем проект
+```
+git@github.com:working-code/rest-api-laravel.git
+```
+2. Переходим в каталог с проектом
+```
+cd rest-api-laravel
+```
+3. Устанавливаем нужные зависимости
+```
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/opt \
+    -w /opt \
+    laravelsail/php80-composer:latest \
+    composer install --ignore-platform-reqs
+```
+4. Для работы с проектом используется утилита <a href="https://laravel.com/docs/8.x/sail">sail</a>. 
+Для удобства установим алиас для sail
+```
+alias sail="bash vendor/bin/sail"
+```
+5. Переименовывем файл **.env.example** в **.env**. Задаем свои параметры для этих переменных
+```
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=rest_api_laravel
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+6. Запускаем проект
+```
+sail up
+```
+7. Запускам миграции
+```
+sail artisan migrate
+```
+8. Генерируем ключи passport
+```
+sail artisan passport:install
+```
+и сохраняем результат. Нам понадобится **Client ID**: 2 и **Client secret**
+9. Заполняем базу тестовыми данными
+```
+sail artisan db:seed
+sail artisan db:seed TaskSeeder
+```
+
+### <a name="tests">Как запустить тесты</a>
+Приложение должно быть запущено.
+```
+sail test
+```
+![tests](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/tests.png)
+
+
+### <a name="test-api">Как проверить API</a>
+####<a name="test-api-swagger">Swagger</a>
+1. Перейдите на страницу документации
+```
+/api/documentation/
+```
+![swagger index](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_index.png)
+
+2. Регестрация пользователя
+
+![swagger reg 0](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg0.png)
+
+![swagger reg 1](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg1.png)
+
+![swagger reg 2](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg2.png)
+
+![swagger reg 3](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg3.png)
+
+3. Авторизируемся для следующих действий
+
+![swagger reg 4](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg4.png)
+
+![swagger reg 5](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg5.png)
+
+4. Получение списка задач
+
+![swagger get task 0](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_get_task0.png)
+
+![swagger get task 1](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_get_task1.png)
+
+5. Создание задачи
+
+![swagger get task 0](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_post_task0.png)
+
+![swagger get task 0](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_post_task1.png)
+
+![swagger get task 0](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_post_task2.png)
+
+
+
+#### <a name="test-api-client">REST client</a>
+Можно использовать любой клиент. В данном примере использовался <a href="https://github.com/RESTEDClient/RESTED">RESTED</a>
 ![1_registration](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/1_registration.png)
 
 ![2_getToken](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/2_getToken.png)
