@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Core\Configuration\Option;
 use Rector\Php74\Rector\Property\TypedPropertyRector;
+use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Set\ValueObject\SetList;
 use Rector\Laravel\Set\LaravelSetList;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -47,4 +48,22 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(Redirect301ToPermanentRedirectRector::class);
     $services->set(RequestStaticValidateToInjectRector::class);
 //     $services->set(Option::SETS, [LaravelSetList::LARAVEL_60]);
+    $services->set(RenameClassRector::class)
+        ->call(
+            'configure',
+            [[
+                 RenameClassRector::OLD_TO_NEW_CLASSES => [
+                     // config/app.php → aliases:
+                     'App'       => 'Illuminate\Support\Facades\App',
+                     'Artisan'   => 'Illuminate\Support\Facades\Artisan',
+                     'Auth'      => 'Illuminate\Support\Facades\Auth',
+                     'Blade'     => 'Illuminate\Support\Facades\Blade',
+                     'Broadcast' => 'Illuminate\Support\Facades\Broadcast',
+                     'Bus'       => 'Illuminate\Support\Facades\Bus',
+                     'Cache'     => 'Illuminate\Support\Facades\Cache',
+                     'Config'    => 'Illuminate\Support\Facades\Config',
+                     // ...
+                 ],
+             ]]
+        );
 };
