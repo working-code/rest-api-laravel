@@ -1,0 +1,347 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentation API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/registration": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Registration user",
+                "operationId": "0d8c097aa57c3206ca5cde2768a168de",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "c_password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "bestUser"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "bestuser@mail.ru"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "64Qd*7"
+                                    },
+                                    "password_repeat": {
+                                        "type": "string",
+                                        "example": "64Qd*7"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": 777
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "bestUser"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "bestuser@mail.ru"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2021-08-08T12:06:54.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2021-08-08T12:06:54.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "description": "Returns list tasks",
+                "operationId": "4293c00a4cffdb881d9f6c2099875f96",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": 70
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Super task"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Description super task"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2021-08-08T12:06:54.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2021-08-08T12:06:54.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "links": {
+                                            "properties": {
+                                                "first": {
+                                                    "type": "string",
+                                                    "example": "http://rest-api-laravel.test/api/v1/tasks?page=1"
+                                                },
+                                                "last": {
+                                                    "type": "string",
+                                                    "example": "http://rest-api-laravel.test/api/v1/tasks?page=7"
+                                                },
+                                                "prev": {
+                                                    "type": "string",
+                                                    "example": "null"
+                                                },
+                                                "next": {
+                                                    "type": "string",
+                                                    "example": "http://rest-api-laravel.test/api/v1/tasks?page=2"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        },
+                                        "path": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "description": "Create task",
+                "operationId": "379ae513b47f83882f91f2b9143fc425",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "description"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Super task"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Description super task"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string",
+                                                    "example": 70
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Super task"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Description super task"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "example": "2021-08-08T12:06:54.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "example": "2021-08-08T12:06:54.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "The name field is required."
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "The description field is required."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "passport": {
+                "type": "oauth2",
+                "description": "Laravel passport oauth2 security.",
+                "in": "header",
+                "scheme": "https",
+                "flows": {
+                    "password": {
+                        "authorizationUrl": "http://rest-api-laravel.test/oauth/authorize",
+                        "tokenUrl": "http://rest-api-laravel.test/oauth/token",
+                        "refreshUrl": "http://rest-api-laravel.test/token/refresh",
+                        "scopes": []
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
