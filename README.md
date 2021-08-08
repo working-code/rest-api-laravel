@@ -1,4 +1,4 @@
-##Написать приложение REST API для работы с задачами (Тестовое задание)
+## Написать приложение REST API для работы с задачами (Тестовое задание)
 
 ### Оглавление
 - [Требования](#requirements)
@@ -105,7 +105,7 @@ HTTP Code: 200 OK
 - docker-compose
 1. Клонируем проект
 ```
-git@github.com:working-code/rest-api-laravel.git
+git clone git@github.com:working-code/rest-api-laravel.git
 ```
 2. Переходим в каталог с проектом
 ```
@@ -120,33 +120,46 @@ docker run --rm \
     laravelsail/php80-composer:latest \
     composer install --ignore-platform-reqs
 ```
-4. Для работы с проектом используется утилита <a href="https://laravel.com/docs/8.x/sail">sail</a>. 
+4. Для работы с проектом используется утилита <a href="https://laravel.com/docs/8.x/sail" target="_blank">sail</a>. 
 Для удобства установим алиас для sail
 ```
 alias sail="bash vendor/bin/sail"
 ```
 5. Переименовывем файл **.env.example** в **.env**. Задаем свои параметры для этих переменных
 ```
+APP_URL=http://rest-api-laravel.test
+
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=rest_api_laravel
 DB_USERNAME=sail
 DB_PASSWORD=password
 ```
-6. Запускаем проект
+6. Добавляем host
+```
+sudo nano /etc/hosts
+```
+в конец файла добавляем 
+```
+127.0.0.1 rest-api-laravel.test
+```
+
+7. Запускаем проект
 ```
 sail up
 ```
-7. Запускам миграции
+
+8. Запускам миграции
 ```
 sail artisan migrate
 ```
-8. Генерируем ключи passport
+9. Генерируем ключи passport
 ```
 sail artisan passport:install
 ```
 и сохраняем результат. Нам понадобится **Client ID**: 2 и **Client secret**
-9. Заполняем базу тестовыми данными
+
+10. Заполняем базу тестовыми данными
 ```
 sail artisan db:seed
 sail artisan db:seed TaskSeeder
@@ -161,10 +174,10 @@ sail test
 
 
 ### <a name="test-api">Как проверить API</a>
-####<a name="test-api-swagger">Swagger</a>
+#### <a name="test-api-swagger">Swagger</a>
 1. Перейдите на страницу документации
 ```
-/api/documentation/
+http://rest-api-laravel.test/api/documentation/
 ```
 ![swagger index](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_index.png)
 
@@ -178,7 +191,7 @@ sail test
 
 ![swagger reg 3](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg3.png)
 
-3. Авторизируемся для следующих действий
+3. Авторизируемся для следующих запросов
 
 ![swagger reg 4](https://github.com/working-code/rest-api-laravel/raw/master/screenshot/swagger_reg4.png)
 
